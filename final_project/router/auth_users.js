@@ -17,27 +17,27 @@ const isValid = (username)=>{ //returns boolean
 
 const authenticatedUser = (username,password)=>{ 
     let authusers=users.filter((user)=>{
-        return (user.username==username && user.password==password)
+        return (user.username===username && user.password===password)
 
     })
     if(authusers.length>0)
     {
-        return true
+        return true;
     }
     else{
-        return false
+        return false;
     }
 }
 
 //only registered users can login
 regd_users.post("/login", (req,res) => {
-    let username=req.params.username;
-    let password=req.params.password;
+    let username=req.body.username;
+    let password=req.body.password;
     if(authenticatedUser(username,password)){
-        let accesstoken=jwt.sign({
+        let accessToken=jwt.sign({
             data:password
         },'access',{expiresIn:60*60})
-        req.session.authorization={accesstoken,username}
+        req.session.authorization={accessToken,username}
         return res.status(200).send("User successfully logged in");
     } 
     else {
@@ -48,9 +48,11 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let isbn=req.params.isbn;
+  books[isbn].reviews=req.query.review;
+  res.send("review added")
 });
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
