@@ -8,26 +8,7 @@ const app = express();
 
 app.use(express.json());
 let users=[]
-const userdoesexist=(username)=>{
-    let userwithsamename=users.filter((user)=>{
-        return user.username===username
-    });
-    if(userwithsamename.length>0){
-        return true;
-    }
-    else 
-        return false;
-}
-const authenticatedUser = (username,password)=>{
-  let validusers = users.filter((user)=>{
-    return (user.username === username && user.password === password)
-  });
-  if(validusers.length > 0){
-    return true;
-  } else {
-    return false;
-  }
-}
+
 
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
