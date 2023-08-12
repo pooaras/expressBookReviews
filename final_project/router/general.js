@@ -28,7 +28,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
     author=req.params.author;
-    matchedbooks=[]
+    let matchedbooks=[]
     if(author){
         // let length=Object.keys(books).length;
         for(const key in books){
@@ -47,8 +47,22 @@ public_users.get('/author/:author',function (req, res) {
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    title=req.params.title;
+    let matchedbooks=[]
+    if(title){
+        // let length=Object.keys(books).length;
+        for(const key in books){
+            if(books.hasOwnProperty(key) && books[key].title===title)
+                matchedbooks.push(books[key])
+        }
+    if(matchedbooks)
+        res.send(matchedbooks);
+    else
+        return res.status(300).json({message: "Yet to be implemented"});    
+        
+    }
+    else
+        return res.status(300).json({message: "Yet to be implemented"});
 });
 
 //  Get book review
