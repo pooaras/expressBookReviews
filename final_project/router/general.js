@@ -4,10 +4,27 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+const useralreadyexist=(username)=>{
+    let matcheduser=users.filter((user)=>{
+        return user.username===username;
+    })
+    if(matcheduser.length>0)
+        return true;
+    else
+        return false;
 
+    
+}
 public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    let username=req.body.username;
+    let password=req.body.password;
+    if(!useralreadyexist(username)){
+        users.push({"username":username,"password":password})
+        //res.send(users)
+        res.send("user registered")
+    }
+    else
+    return res.status(300).json({message: "user already exist"});
 });
 
 // Get the book list available in the shop
@@ -22,7 +39,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
     if(isbn)
     res.send(books[isbn]);
     else
-    return res.status(300).json({message: "Yet to be implemented"});
+    return res.status(300).json({message: "not found"});
  });
   
 // Get book details based on author
@@ -38,11 +55,11 @@ public_users.get('/author/:author',function (req, res) {
     if(matchedbooks)
         res.send(matchedbooks);
     else
-        return res.status(300).json({message: "Yet to be implemented"});    
+        return res.status(300).json({message: "not found"});    
         
     }
     else
-        return res.status(300).json({message: "Yet to be implemented"});
+        return res.status(300).json({message: "not found"});
 });
 
 // Get all books based on title
@@ -58,11 +75,11 @@ public_users.get('/title/:title',function (req, res) {
     if(matchedbooks)
         res.send(matchedbooks);
     else
-        return res.status(300).json({message: "Yet to be implemented"});    
+        return res.status(300).json({message: "not found"});    
         
     }
     else
-        return res.status(300).json({message: "Yet to be implemented"});
+        return res.status(300).json({message: "not found"});
 });
 
 //  Get book review
@@ -71,7 +88,7 @@ public_users.get('/review/:isbn',function (req, res) {
     if(isbn)
     return res.send(books[isbn].reviews);
     else
-    return res.status(300).json({message: "Yet to be implemented"});
+    return res.status(300).json({message: "not found"});
 });
 
 module.exports.general = public_users;
