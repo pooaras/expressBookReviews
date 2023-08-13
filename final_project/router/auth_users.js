@@ -59,7 +59,17 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         res.status(208).send("review or isbn not found")
     }
 });
-
+regd_users.delete("/auth/delete/:isbn",(req,res)=>{
+    let isbn=req.params.isbn;
+    if(isbn && review){
+        delete books[isbn].reviews[authusers[0].username];
+        res.send("review deleted successfully")
+    }
+    else{
+        res.status(208).send("isbn not found")
+    }
+    
+})
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
