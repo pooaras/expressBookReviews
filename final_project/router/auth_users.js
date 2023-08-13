@@ -4,9 +4,10 @@ let books = require("./booksdb.js");
 const regd_users = express.Router();
 
 let users = [];
-
+let matcheduser=[];
+let authusers=[];
 const isValid = (username)=>{ //returns boolean
-    let matcheduser=users.filter((user)=>{
+    matcheduser=users.filter((user)=>{
         return user.username===username;
     })
     if(matcheduser.length>0)
@@ -16,7 +17,7 @@ const isValid = (username)=>{ //returns boolean
 }
 
 const authenticatedUser = (username,password)=>{ 
-    let authusers=users.filter((user)=>{
+    authusers=users.filter((user)=>{
         return (user.username===username && user.password===password)
 
     })
@@ -49,8 +50,14 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   let isbn=req.params.isbn;
-  books[isbn].reviews=req.query.review;
-  res.send("review added")
+  let review=req.query.review;
+    if(isbn && review){
+        books[isbn].reviews[authusers[0].username]=review;
+        res.send("review added successfully")
+    }
+    else{
+        res.status(208).send("review or isbn not found")
+    }
 });
 
 
