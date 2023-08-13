@@ -59,7 +59,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         res.status(208).send("review or isbn not found")
     }
 });
-regd_users.delete("/auth/delete/:isbn",(req,res)=>{
+regd_users.delete("/auth/review/:isbn",(req,res)=>{
     let isbn=req.params.isbn;
     if(isbn && review){
         delete books[isbn].reviews[authusers[0].username];
